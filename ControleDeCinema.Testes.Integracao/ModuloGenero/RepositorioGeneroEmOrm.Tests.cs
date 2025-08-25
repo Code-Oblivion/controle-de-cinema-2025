@@ -7,7 +7,7 @@ namespace ControleDeCinema.Testes.Integracao.ModuloGenero;
 [TestCategory("Teste de Integração de Gênero")]
 public sealed class RepositorioGeneroEmOrm : TestFixture
 {
-    public void Deve_Cadastrar_GeneroCorretmente() 
+    public void Deve_Cadastrar_Genero_Corretmente() 
     {
         // Arrange
         var genero = new GeneroFilme("Terror");
@@ -22,7 +22,7 @@ public sealed class RepositorioGeneroEmOrm : TestFixture
     }
 
     [TestMethod]
-    public void Deve_Editar_GeneroCorretamente()
+    public void Deve_Editar_Genero_Corretamente()
     {
         // Arrange
         var genero = new GeneroFilme("Terror");
@@ -41,7 +41,7 @@ public sealed class RepositorioGeneroEmOrm : TestFixture
     }
 
     [TestMethod]
-    public void Deve_Excluir_GeneroCorretamente()
+    public void Deve_Excluir_Genero_Corretamente()
     {
         // Arrange
         var genero = new GeneroFilme("Terror");
@@ -60,7 +60,7 @@ public sealed class RepositorioGeneroEmOrm : TestFixture
     }
 
     [TestMethod]
-    public void Deve_Selecionar_TodosGenerosCorretamente()
+    public void Deve_Selecionar_TodosGeneros_Corretamente()
     {
         // Arrange
         var genero1 = new GeneroFilme("Terror");
