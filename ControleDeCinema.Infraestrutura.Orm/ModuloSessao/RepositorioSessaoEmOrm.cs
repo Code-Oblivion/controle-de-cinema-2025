@@ -48,6 +48,7 @@ public class RepositorioSessaoEmOrm : RepositorioBaseEmOrm<Sessao>, IRepositorio
             .Include(x => x.Filme)
             .Include(x => x.Sala)
             .Include(x => x.Ingressos)
+            .OrderBy(x => x.NumeroMaximoIngressos)
             .ToList();
     }
 
