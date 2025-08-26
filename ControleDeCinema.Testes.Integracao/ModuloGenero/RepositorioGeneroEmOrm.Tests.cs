@@ -7,18 +7,20 @@ namespace ControleDeCinema.Testes.Integracao.ModuloGenero;
 [TestCategory("Teste de Integração de Gênero")]
 public sealed class RepositorioGeneroEmOrm : TestFixture
 {
-    public void Deve_Cadastrar_Genero_Corretmente() 
+    [TestMethod]
+    public void Deve_Cadastrar_Genero_Corretamente() 
     {
         // Arrange
         var genero = new GeneroFilme("Terror");
+
         // Act
         _repositorioGenero?.Cadastrar(genero);
-        _dbContext.SaveChanges();
+        _dbContext?.SaveChanges();
 
         // Assert
-        var registroSelecionado = _repositorioGenero?.SelecionarRegistroPorId(genero.Id);
+        var generoSelecionado = _repositorioGenero?.SelecionarRegistroPorId(genero.Id);
 
-        Assert.AreEqual(genero, registroSelecionado);
+        Assert.AreEqual(genero, generoSelecionado);
     }
 
     [TestMethod]
@@ -27,17 +29,19 @@ public sealed class RepositorioGeneroEmOrm : TestFixture
         // Arrange
         var genero = new GeneroFilme("Terror");
         _repositorioGenero?.Cadastrar(genero);
-        _dbContext.SaveChanges();
-        var gerenoEditado = new GeneroFilme("Comédia");
+        _dbContext?.SaveChanges();
+
+        var generoEditado = new GeneroFilme("Comédia");
 
         // Act
-        var conseguiuEditar = _repositorioGenero?.Editar(genero.Id, gerenoEditado);
-        _dbContext.SaveChanges();
+        var conseguiuEditar = _repositorioGenero?.Editar(genero.Id, generoEditado);
+        _dbContext?.SaveChanges();
 
         // Assert
-        var registroSelecionado = _repositorioGenero?.SelecionarRegistroPorId(genero.Id);
+        var generoSelecionado = _repositorioGenero?.SelecionarRegistroPorId(genero.Id);
+        
         Assert.IsTrue(conseguiuEditar);
-        Assert.AreEqual(genero, registroSelecionado);
+        Assert.AreEqual(genero, generoSelecionado);
     }
 
     [TestMethod]
@@ -46,21 +50,21 @@ public sealed class RepositorioGeneroEmOrm : TestFixture
         // Arrange
         var genero = new GeneroFilme("Terror");
         _repositorioGenero?.Cadastrar(genero);
-        _dbContext.SaveChanges();
+        _dbContext?.SaveChanges();
 
         // Act
         var conseguiuExcluir = _repositorioGenero?.Excluir(genero.Id);
-        _dbContext.SaveChanges();
+        _dbContext?.SaveChanges();
 
         // Assert
-        var registroSelecionado = _repositorioGenero?.SelecionarRegistroPorId(genero.Id);
+        var generoSelecionado = _repositorioGenero?.SelecionarRegistroPorId(genero.Id);
         
         Assert.IsTrue(conseguiuExcluir);
-        Assert.IsNull(registroSelecionado);
+        Assert.IsNull(generoSelecionado);
     }
 
     [TestMethod]
-    public void Deve_Selecionar_TodosGeneros_Corretamente()
+    public void Deve_Selecionar_Todos_os_Generos_Corretamente()
     {
         // Arrange
         var genero1 = new GeneroFilme("Terror");
@@ -69,18 +73,16 @@ public sealed class RepositorioGeneroEmOrm : TestFixture
 
         List<GeneroFilme> generosEsperados = [genero1, genero2, genero3];
         _repositorioGenero?.CadastrarEntidades(generosEsperados);
-        _dbContext.SaveChanges();
+        _dbContext?.SaveChanges();
 
         var generosEsperadosOrdenadas = generosEsperados
             .OrderBy(g => g.Descricao)
             .ToList();
 
         // Act
-        var registrosSelecionados = _repositorioGenero?.SelecionarRegistros();
+        var generosRecebidos = _repositorioGenero?.SelecionarRegistros();
+
         // Assert
-        CollectionAssert.AreEqual(generosEsperadosOrdenadas, registrosSelecionados);
+        CollectionAssert.AreEqual(generosEsperadosOrdenadas, generosRecebidos);
     }
-
-
-
 }
