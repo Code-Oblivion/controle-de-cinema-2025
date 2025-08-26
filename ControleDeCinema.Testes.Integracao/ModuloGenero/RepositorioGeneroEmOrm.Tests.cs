@@ -64,6 +64,34 @@ public sealed class RepositorioGeneroEmOrm : TestFixture
     }
 
     [TestMethod]
+    public void Deve_Selecionar_Genero_Por_Id_Corretamente() 
+    {
+        // Arrange
+        var genero = new GeneroFilme("Terror");
+        _repositorioGenero?.Cadastrar(genero);
+        _dbContext?.SaveChanges();
+
+        // Act
+        var generoSelecionado = _repositorioGenero?.SelecionarRegistroPorId(genero.Id);
+
+        // Assert
+        Assert.AreEqual(genero, generoSelecionado);
+    }
+
+    [TestMethod]
+    public void Deve_Retornar_Null_Ao_Selecionar_Genero_Por_Id_Inexistente() 
+    {
+        // Arrange
+        var idInexistente = Guid.NewGuid();
+
+        // Act
+        var generoSelecionado = _repositorioGenero?.SelecionarRegistroPorId(idInexistente);
+
+        // Assert
+        Assert.IsNull(generoSelecionado);
+    }
+
+    [TestMethod]
     public void Deve_Selecionar_Todos_os_Generos_Corretamente()
     {
         // Arrange
