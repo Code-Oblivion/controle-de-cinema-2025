@@ -10,12 +10,12 @@ namespace ControleDeCinema.Testes.Integracao.ModuloFilme;
 public sealed class RepositorioFilmeEmOrm : TestFixture
 {
     [TestMethod]
-    public void Deve_Cadastrar_Filme_Corretmente()
+    public void Deve_Cadastrar_Filme_Corretamente()
     {
         // Arrange
         var genero = Builder<GeneroFilme>.CreateNew().Persist();
 
-        var filme = new Filme ("Missão Impossível", 200, true, genero);
+        var filme = new Filme("Missão Impossível", 200, true, genero);
 
         // Act
         _repositorioFilme?.Cadastrar(filme);
@@ -72,7 +72,7 @@ public sealed class RepositorioFilmeEmOrm : TestFixture
     }
 
     [TestMethod]
-    public void Deve_Selecionar_Todos_Filmes_Corretamente()
+    public void Deve_Selecionar_Todos_Os_Filmes_Corretamente()
     {
         // Arrange
         var generos = Builder<GeneroFilme>.CreateListOfSize(3).Persist().ToList();
@@ -82,6 +82,7 @@ public sealed class RepositorioFilmeEmOrm : TestFixture
         var filme3 = new Filme("Matrix", 180, false, generos[2]);
 
         List<Filme> filmesEsperados = [filme1, filme2, filme3];
+        _repositorioFilme?.CadastrarEntidades(filmesEsperados);
         _dbContext?.SaveChanges();
 
         var filmesEsperadosOrdenadas = filmesEsperados
