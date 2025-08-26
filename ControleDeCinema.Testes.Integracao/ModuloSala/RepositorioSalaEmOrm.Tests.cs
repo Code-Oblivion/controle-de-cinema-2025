@@ -64,6 +64,34 @@ public sealed class RepositorioSalaEmOrm : TestFixture
     }
 
     [TestMethod]
+    public void Deve_Selecionar_Sala_Por_Id_Corretamente()
+    {
+        // Arrange
+        var sala = new Sala(1, 10);
+        _repositorioSala?.Cadastrar(sala);
+        _dbContext?.SaveChanges();
+
+        // Act
+        var salaSelecionada = _repositorioSala?.SelecionarRegistroPorId(sala.Id);
+
+        // Assert
+        Assert.AreEqual(sala, salaSelecionada);
+    }
+
+    [TestMethod]
+    public void Deve_Retornar_Null_Ao_Selecionar_Sala_Por_Id_Inexistente()
+    {
+        // Arrange
+        var idInexistente = Guid.NewGuid();
+
+        // Act
+        var salaSelecionada = _repositorioSala?.SelecionarRegistroPorId(idInexistente);
+
+        // Assert
+        Assert.IsNull(salaSelecionada);
+    }
+
+    [TestMethod]
     public void Deve_Selecionar_Todos_As_Salas_Corretamente()
     {
         // Arrange
