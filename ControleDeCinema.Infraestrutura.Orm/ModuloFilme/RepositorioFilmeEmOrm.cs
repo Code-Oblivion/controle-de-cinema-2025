@@ -19,6 +19,7 @@ public class RepositorioFilmeEmOrm : RepositorioBaseEmOrm<Filme>, IRepositorioFi
     {
         return registros
             .Include(f => f.Genero)
+            .OrderBy(f => f.Titulo)
             .ToList();
     }
 }
