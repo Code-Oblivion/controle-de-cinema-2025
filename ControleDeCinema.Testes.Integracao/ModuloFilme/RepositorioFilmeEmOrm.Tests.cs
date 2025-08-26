@@ -72,6 +72,36 @@ public sealed class RepositorioFilmeEmOrm : TestFixture
     }
 
     [TestMethod]
+    public void Deve_Selecionar_Filme_Por_Id_Corretamente()
+    {
+        // Arrange
+        var genero = Builder<GeneroFilme>.CreateNew().Persist();
+        var filme = new Filme("Missão Impossível", 200, true, genero);
+        _repositorioFilme?.Cadastrar(filme);
+        _dbContext?.SaveChanges();
+
+        // Act
+        var filmeSelecionado = _repositorioFilme?.SelecionarRegistroPorId(filme.Id);
+
+        // Assert
+        Assert.IsNotNull(filmeSelecionado);
+        Assert.AreEqual(filme, filmeSelecionado);
+    }
+
+    [TestMethod]
+    public void Deve_Retornar_Null_Ao_Selecionar_Filme_Por_Id_Inexistente()
+    {
+        // Arrange
+        var idInexistente = Guid.NewGuid();
+
+        // Act
+        var filmeSelecionado = _repositorioFilme?.SelecionarRegistroPorId(idInexistente);
+
+        // Assert
+        Assert.IsNull(filmeSelecionado);
+    }
+
+    [TestMethod]
     public void Deve_Selecionar_Todos_Os_Filmes_Corretamente()
     {
         // Arrange
