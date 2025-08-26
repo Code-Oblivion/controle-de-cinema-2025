@@ -8,19 +8,19 @@ namespace ControleDeCinema.Testes.Integracao.ModuloSala;
 public sealed class RepositorioSalaEmOrm : TestFixture
 {
     [TestMethod]
-    public void Deve_Cadastrar_Sala_Corretmente()
+    public void Deve_Cadastrar_Sala_Corretamente()
     {
         // Arrange
         var sala = new Sala(1, 10);
 
         // Act
         _repositorioSala?.Cadastrar(sala);
-        _dbContext.SaveChanges();
+        _dbContext?.SaveChanges();
 
         // Assert
-        var registroSelecionado = _repositorioSala?.SelecionarRegistroPorId(sala.Id);
+        var salaSelecionada = _repositorioSala?.SelecionarRegistroPorId(sala.Id);
 
-        Assert.AreEqual(sala, registroSelecionado);
+        Assert.AreEqual(sala, salaSelecionada);
     }
 
     [TestMethod]
@@ -29,7 +29,7 @@ public sealed class RepositorioSalaEmOrm : TestFixture
         // Arrange
         var sala = new Sala(1, 10);
         _repositorioSala?.Cadastrar(sala);
-        _dbContext.SaveChanges();
+        _dbContext?.SaveChanges();
 
         var salaEditada = new Sala(2, 20);
 
@@ -38,10 +38,10 @@ public sealed class RepositorioSalaEmOrm : TestFixture
         _dbContext?.SaveChanges();
 
         // Assert
-        var registroSelecionado = _repositorioSala?.SelecionarRegistroPorId(sala.Id);
+        var salaSelecionada = _repositorioSala?.SelecionarRegistroPorId(sala.Id);
        
         Assert.IsTrue(conseguiuEditar);
-        Assert.AreEqual(sala, registroSelecionado);
+        Assert.AreEqual(sala, salaSelecionada);
     }
 
     [TestMethod]
@@ -50,21 +50,21 @@ public sealed class RepositorioSalaEmOrm : TestFixture
         // Arrange
         var sala = new Sala(1, 10);
         _repositorioSala?.Cadastrar(sala);
-        _dbContext.SaveChanges();
+        _dbContext?.SaveChanges();
 
         // Act
         var conseguiuExcluir = _repositorioSala?.Excluir(sala.Id);
-        _dbContext.SaveChanges();
+        _dbContext?.SaveChanges();
 
         // Assert
-        var registroSelecionado = _repositorioSala?.SelecionarRegistroPorId(sala.Id);
+        var salaSelecionada = _repositorioSala?.SelecionarRegistroPorId(sala.Id);
 
         Assert.IsTrue(conseguiuExcluir);
-        Assert.IsNull(registroSelecionado);
+        Assert.IsNull(salaSelecionada);
     }
 
     [TestMethod]
-    public void Deve_Selecionar_Todos_Salas_Corretamente()
+    public void Deve_Selecionar_Todos_As_Salas_Corretamente()
     {
         // Arrange
         var sala1 = new Sala(1, 10);
@@ -74,7 +74,7 @@ public sealed class RepositorioSalaEmOrm : TestFixture
         List<Sala> salasEsperadas = [sala1, sala2, sala3];
 
         _repositorioSala?.CadastrarEntidades(salasEsperadas);
-        _dbContext.SaveChanges();
+        _dbContext?.SaveChanges();
 
         var salaEsperadasOrdenadas = salasEsperadas
             .OrderBy(x => x.Numero)
