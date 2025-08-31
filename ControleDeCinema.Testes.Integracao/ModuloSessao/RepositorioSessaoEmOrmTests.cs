@@ -172,7 +172,36 @@ public sealed class RepositorioSessaoEmOrmTests : TestFixture
     [TestMethod]
     public void Deve_Selecionar_Sessoes_Do_Usuario_Corretamente()
     {
-        
+        // Arrange
+        var usuarioA = Guid.NewGuid();
+        var usuarioB = Guid.NewGuid();
 
+        var genero = Builder<GeneroFilme>.CreateNew().Persist();
+        var filme = Builder<Filme>.CreateNew().With(f => f.Genero = genero).Persist();
+        var salas = Builder<Sala>.CreateListOfSize(3).Persist();
+
+        var sessao1 = new Sessao(DateTime.UtcNow.AddHours(1), 10, filme, salas[0]);
+        var sessao2 = new Sessao(DateTime.UtcNow.AddHours(2), 20, filme, salas[1]);
+        var sessao3 = new Sessao(DateTime.UtcNow.AddHours(3), 30, filme, salas[2]);
+
+        sessao1.UsuarioId = usuarioA;
+        sessao2.UsuarioId = usuarioA;
+        sessao3.UsuarioId = usuarioB;
+
+        List<Sessao> todasSessoes = [sessao1, sessao2, sessao3];
+        List<Sessao> sessoesEsperadas = [sessao1, sessao2];
+
+        _repositorioSessao?.CadastrarEntidades(todasSessoes);
+        _dbContext?.SaveChanges();
+
+        var sessoesEsperadasOrdenadas = sessoesEsperadas
+            .OrderBy(s => s.NumeroMaximoIngressos)
+            .ToList();
+
+        // Act
+        var sessoesSelecionadas = _repositorioSessao?.SelecionarRegistrosDoUsuario(usuarioA);
+
+        // Assert
+        CollectionAssert.AreEqual(sessoesSelecionadas, sessoesEsperadasOrdenadas);
     }
 }
