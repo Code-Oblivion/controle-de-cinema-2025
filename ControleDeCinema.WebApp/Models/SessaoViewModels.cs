@@ -96,6 +96,8 @@ public class ExcluirSessaoViewModel
     public string Filme { get; set; }
     public int Sala { get; set; }
 
+    public ExcluirSessaoViewModel() { }
+
     public ExcluirSessaoViewModel(Guid id, DateTime inicio, string filmeTitulo, int salaNumero)
     {
         Id = id;
