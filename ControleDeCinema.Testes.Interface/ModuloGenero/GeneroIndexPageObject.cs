@@ -42,7 +42,7 @@ public class GeneroIndexPageObject
         return new GeneroFormPageObject(driver!);
     }
 
-    public bool ContemDisciplina(string nome)
+    public bool ContemGenero(string nome)
     {
         wait.Until(d => d.FindElement(By.CssSelector("a[data-se='btnCadastrar']")).Displayed);
 

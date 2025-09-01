@@ -20,7 +20,7 @@ public sealed class GeneroInterfaceTests : TestFixture
             .PreencherDescricao("Ação")
             .Confirmar();
         // Assert
-        Assert.IsTrue(IndexPage.ContemDisciplina("Ação"));
+        Assert.IsTrue(IndexPage.ContemGenero("Ação"));
     }
 
     [TestMethod]
@@ -42,7 +42,7 @@ public sealed class GeneroInterfaceTests : TestFixture
             .Confirmar();
 
         // Assert
-        Assert.IsTrue(IndexPage.ContemDisciplina("Comédia Editada"));
+        Assert.IsTrue(IndexPage.ContemGenero("Comédia Editada"));
     }
 
     [TestMethod]
@@ -63,7 +63,7 @@ public sealed class GeneroInterfaceTests : TestFixture
             .Confirmar();
 
         // Assert
-        Assert.IsFalse(IndexPage.ContemDisciplina("Terror"));
+        Assert.IsFalse(IndexPage.ContemGenero("Terror"));
     }
 
     [TestMethod]
