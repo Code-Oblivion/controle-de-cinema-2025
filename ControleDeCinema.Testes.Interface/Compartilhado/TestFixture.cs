@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Support.UI;
 using Testcontainers.PostgreSql;
 
 namespace ControleDeCinema.Testes.Interface.Compartilhado;
@@ -60,7 +61,7 @@ public abstract class TestFixture
     }
 
     [TestInitialize]
-    public void InicializarTeste()
+    public virtual void InicializarTeste()
     {
         if (dbContainer is null)
             throw new ArgumentNullException("O banco de dados não foi inicializado.");
@@ -68,16 +69,23 @@ public abstract class TestFixture
         _dbContext = ControleDeCinemaDbContextFactory.CriarDbContext(dbContainer.GetConnectionString());
 
         ConfigurarTabelas(_dbContext);
+
+        driver!.Manage().Cookies.DeleteAllCookies();
+
+        RegistrarComoContaEmpresarial();
     }
 
     private static void ConfigurarTabelas(ControleDeCinemaDbContext dbContext)
     {
         dbContext.Database.EnsureCreated();
 
+        dbContext.Ingressos.RemoveRange(dbContext.Ingressos);
+        dbContext.Sessoes.RemoveRange(dbContext.Sessoes);
         dbContext.Filmes.RemoveRange(dbContext.Filmes);
         dbContext.GenerosFilme.RemoveRange(dbContext.GenerosFilme);
         dbContext.Salas.RemoveRange(dbContext.Salas);
-        dbContext.Sessoes.RemoveRange(dbContext.Sessoes);
+        dbContext.UserRoles.RemoveRange(dbContext.UserRoles);
+        dbContext.Users.RemoveRange(dbContext.Users);
 
         dbContext.SaveChanges();
     }
@@ -100,18 +108,17 @@ public abstract class TestFixture
         await dbContainer.StartAsync();
     }
 
-    //falta InicializarAplicacaoAsync
     private static async Task InicializarAplicacaoAsync()
     {
         // Configura a imagem à partir do Dockerfile
-        var imagem = new ImageFromDockerfileBuilder()
-            .WithDockerfileDirectory(CommonDirectoryPath.GetSolutionDirectory(), string.Empty)
-            .WithDockerfile("Dockerfile")
-            .WithBuildArgument("RESOURCE_REAPER_SESSION_ID", ResourceReaper.DefaultSessionId.ToString("D"))
-            .WithName("ControleDeCinema-app-e2e:latest")
-            .Build();
+        //var imagem = new ImageFromDockerfileBuilder()
+        //    .WithDockerfileDirectory(CommonDirectoryPath.GetSolutionDirectory(), string.Empty)
+        //    .WithDockerfile("Dockerfile")
+        //    .WithBuildArgument("RESOURCE_REAPER_SESSION_ID", ResourceReaper.DefaultSessionId.ToString("D"))
+        //    .WithName("ControleDeCinema-app-e2e:latest")
+        //    .Build();
 
-        await imagem.CreateAsync().ConfigureAwait(false);
+        //await imagem.CreateAsync().ConfigureAwait(false);
 
         // Configura a connection string para a rede: "Host=teste-facil-e2e-testdb;Port=5432;Database=TesteFacilDb;Username=postgres;Password=YourStrongPassword"
         var connectionStringRede = dbContainer?.GetConnectionString()
@@ -120,7 +127,7 @@ public abstract class TestFixture
 
         // Configura o container da aplicação e inicializa o enderecoBase
         appContainer = new ContainerBuilder()
-            .WithImage(imagem)
+            .WithImage("controledecinemawebapp:latest")
             .WithPortBinding(appPort, true)
             .WithNetwork(rede)
             .WithNetworkAliases("ControleDeCinema-webapp")
@@ -139,7 +146,6 @@ public abstract class TestFixture
         enderecoBase = $"http://{appContainer.Name}:{appPort}";
     }
 
-    //falta InicializarWebDriverAsync
     private static async Task InicializarWebDriverAsync()
     {
         seleniumContainer = new ContainerBuilder()
@@ -159,6 +165,10 @@ public abstract class TestFixture
         var enderecoSelenium = new Uri($"http://{seleniumContainer.Hostname}:{seleniumContainer.GetMappedPublicPort(seleniumPort)}/wd/hub");
 
         var options = new ChromeOptions();
+
+        options.AddArgument("--window-size=1920,2000");
+        options.AddArgument("--disable-dev-shm-usage");
+        options.AddArgument("--no-sandbox");
 
         driver = new RemoteWebDriver(enderecoSelenium, options);
     }
@@ -182,5 +192,43 @@ public abstract class TestFixture
 
         if (seleniumContainer is not null)
             await seleniumContainer.DisposeAsync();
+    }
+
+    protected static void RegistrarComoContaEmpresarial()
+    {
+        driver!.Navigate().GoToUrl($"{enderecoBase}/autenticacao/registro");
+
+        IWebElement inputEmail = driver.FindElement(By.CssSelector("input[data-se='inputEmail']"));
+        IWebElement inputSenha = driver.FindElement(By.CssSelector("input[data-se='inputSenha']"));
+        IWebElement inputConfirmarSenha = driver.FindElement(By.CssSelector("input[data-se='inputConfirmarSenha']"));
+        SelectElement selectTipoUsuario = new(driver.FindElement(By.CssSelector("select[data-se='selectTipoUsuario']")));
+
+        inputEmail.Clear();
+        inputEmail.SendKeys("test@test.com");
+
+        inputSenha.Clear();
+        inputSenha.SendKeys("Senha123!");
+
+        inputConfirmarSenha.Clear();
+        inputConfirmarSenha.SendKeys("Senha123!");
+
+        selectTipoUsuario.SelectByText("Empresa");
+
+        WebDriverWait wait = new(driver, TimeSpan.FromSeconds(20));
+
+        wait.Until(d =>
+        {
+            IWebElement btn = d.FindElement(By.CssSelector("button[data-se='btnConfirmar']"));
+            if (!btn.Enabled || !btn.Displayed) return false;
+            btn.Click();
+            return true;
+        });
+
+        wait.Until(d =>
+            !d.Url.Contains("/autenticacao/registro", StringComparison.OrdinalIgnoreCase) &&
+            d.FindElements(By.CssSelector("form[action='/autenticacao/registro']")).Count == 0
+        );
+
+        wait.Until(d => d.FindElements(By.CssSelector("form[action='/autenticacao/logout']")).Count > 0);
     }
 }
