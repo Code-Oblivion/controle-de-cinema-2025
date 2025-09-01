@@ -33,16 +33,16 @@
         <div class="col-12 col-md-3">
             <div class="card border-0">
                 <div class="card-body">
-                    <h5 class="card-title">@registro.Descricao</h5>
+                    <h5 class="card-title" data-se="Descricao">@registro.Descricao</h5>
 
                     <span class="d-flex gap-1 justify-content-end mt-4">
                         <a asp-action="Detalhes" asp-route-id="@registro.Id" class="btn btn-secondary rounded-circle card-option" title="Detalhes">
                             <i class="bi bi-search"></i>
                         </a>
-                        <a asp-action="Editar" asp-route-id="@registro.Id" class="btn btn-primary rounded-circle card-option" title="Edição">
+                        <a asp-action="Editar" asp-route-id="@registro.Id" class="btn btn-primary rounded-circle card-option" title="Edição" data-se="btnEdição">
                             <i class="bi bi-pencil-square"></i>
                         </a>
-                        <a asp-action="Excluir" asp-route-id="@registro.Id" class="btn btn-danger rounded-circle card-option" title="Exclusão">
+                        <a asp-action="Excluir" asp-route-id="@registro.Id" class="btn btn-danger rounded-circle card-option" title="Exclusão" data-se="btnExclusão">
                             <i class="bi bi-trash"></i>
                         </a>
                     </span>
