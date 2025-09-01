@@ -9,26 +9,26 @@
     <div class="col-md-8">
         <div class="card rounded-4 border-0">
             <div class="card-body p-md-5">
-                <form asp-action="Editar" asp-route-id="@Model.Id">
+                <form asp-action="Editar" asp-route-id="@Model.Id" data-se="Formulario">
                     <h3>Formulário de Edição</h3>
 
                     <partial name="_ValidationAlert"></partial>
 
                     <div class="form-group d-grid gap-2 mt-3">
                         <label asp-for="Numero" class="control-label fs-5">Número:</label>
-                        <input asp-for="Numero" class="form-control" type="number" min="0" />
-                        <span asp-validation-for="Numero" class="text-danger"></span>
+                        <input asp-for="Numero" class="form-control" type="number" data-se="Numero" />
+                        <span asp-validation-for="Numero" class="text-danger" data-se="Numero-error"></span>
                     </div>
 
                     <div class="form-group d-grid gap-2 mt-3">
                         <label asp-for="Capacidade" class="control-label fs-5">Capacidade:</label>
-                        <input asp-for="Capacidade" class="form-control" type="number" min="0" />
-                        <span asp-validation-for="Capacidade" class="text-danger"></span>
+                        <input asp-for="Capacidade" class="form-control" type="number" data-se="Capacidade" />
+                        <span asp-validation-for="Capacidade" class="text-danger" data-se="Capacidade-error"></span>
                     </div>
 
                     <div class="form-group d-flex align-items-center justify-content-end gap-3 mt-5">
                         <a asp-action="Index">Voltar para a listagem</a>
-                        <button type="submit" class="btn btn-primary rounded-3 px-5">Confirmar</button>
+                        <button type="submit" class="btn btn-primary rounded-3 px-5" data-se="btnConfirmar">Confirmar</button>
                     </div>
                 </form>
             </div>
