@@ -33,7 +33,7 @@
         <div class="col-12 col-md-3 d-flex">
             <div class="card border-0 flex-fill">
                 <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">@registro.Titulo</h5>
+                    <h5 class="card-title" data-se="Titulo">@registro.Titulo</h5>
 
                     <p class="card-text mb-0">
                         <span class="fw-semibold">Gênero:</span> @registro.Genero
@@ -54,10 +54,10 @@
                         <a asp-action="Detalhes" asp-route-id="@registro.Id" class="btn btn-secondary rounded-circle card-option" title="Detalhes">
                             <i class="bi bi-search"></i>
                         </a>
-                        <a asp-action="Editar" asp-route-id="@registro.Id" class="btn btn-primary rounded-circle card-option" title="Edição">
+                        <a asp-action="Editar" asp-route-id="@registro.Id" class="btn btn-primary rounded-circle card-option" title="Edição" data-se="btnEdição">
                             <i class="bi bi-pencil-square"></i>
                         </a>
-                        <a asp-action="Excluir" asp-route-id="@registro.Id" class="btn btn-danger rounded-circle card-option" title="Exclusão">
+                        <a asp-action="Excluir" asp-route-id="@registro.Id" class="btn btn-danger rounded-circle card-option" title="Exclusão" data-se="btnExclusão">
                             <i class="bi bi-trash"></i>
                         </a>
                     </div>

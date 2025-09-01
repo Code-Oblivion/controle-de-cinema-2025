@@ -9,26 +9,26 @@
     <div class="col-md-8">
         <div class="card rounded-4 border-0">
             <div class="card-body p-md-5">
-                <form asp-action="Cadastrar">
+                <form asp-action="Cadastrar" data-se="Formulario" novalidate>
                     <h3>Formulário de Cadastro</h3>
 
                     <partial name="_ValidationAlert"></partial>
 
                     <div class="form-group d-grid gap-2 mt-3">
                         <label asp-for="Titulo" class="control-label fs-5">Título:</label>
-                        <input asp-for="Titulo" class="form-control" />
-                        <span asp-validation-for="Titulo" class="text-danger"></span>
+                        <input asp-for="Titulo" class="form-control" data-se="Titulo" />
+                        <span asp-validation-for="Titulo" class="text-danger" data-se="Titulo-erro"></span>
                     </div>
 
                     <div class="form-group d-grid gap-2 mt-3">
                         <label asp-for="Duracao" class="control-label fs-5">Duração:</label>
-                        <input asp-for="Duracao" class="form-control" type="number" min="0" />
-                        <span asp-validation-for="Duracao" class="text-danger"></span>
+                        <input asp-for="Duracao" class="form-control" type="number" data-se="Duracao" />
+                        <span asp-validation-for="Duracao" class="text-danger" data-se="Duracao-erro"></span>
                     </div>
 
                     <div class="form-group d-grid gap-2 mt-3">
                         <div class="form-check">
-                            @Html.CheckBoxFor(x => x.Lancamento, new { @class = "form-check-input" })
+                            @Html.CheckBoxFor(x => x.Lancamento, new { @class = "form-check-input", data_se = "checkbox-lancamento" })
                             <label asp-for="Lancamento" class="form-check-label">Lançamento</label>
                         </div>
                         <span asp-validation-for="Lancamento" class="text-danger"></span>
@@ -36,13 +36,13 @@
 
                     <div class="form-group d-grid gap-2 mt-3">
                         <label asp-for="GeneroId" class="control-label fs-5">Gênero do Filme:</label>
-                        <select asp-for="GeneroId" asp-items="@Model.GenerosDisponiveis" class="form-control"></select>
-                        <span asp-validation-for="GeneroId" class="text-danger"></span>
+                        <select asp-for="GeneroId" asp-items="@Model.GenerosDisponiveis" class="form-control" data-se="Genero"></select>
+                        <span asp-validation-for="GeneroId" class="text-danger" data-se="Genero-erro"></span>
                     </div>
 
                     <div class="form-group d-flex align-items-center justify-content-end gap-3 mt-5">
                         <a asp-action="Index">Voltar para a listagem</a>
-                        <button type="submit" class="btn btn-primary rounded-3 px-5">Confirmar</button>
+                        <button type="submit" class="btn btn-primary rounded-3 px-5" data-se="btnConfirmar">Confirmar</button>
                     </div>
                 </form>
             </div>

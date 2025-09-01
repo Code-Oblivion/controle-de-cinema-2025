@@ -12,14 +12,14 @@ public abstract class FormularioFilmeViewModel
     [MaxLength(100, ErrorMessage = "O campo \"Título\" precisa conter no máximo 50 caracteres.")]
     public string? Titulo { get; set; }
 
-    [Required(ErrorMessage = "O campo \"Duracão\" é obrigatório.")]
-    [Range(1, int.MaxValue, ErrorMessage = "O campo \"Duracão\" precisa conter um valor acima de 0.")]
+    [Required(ErrorMessage = "O campo \"Duração\" é obrigatório.")]
+    [Range(1, int.MaxValue, ErrorMessage = "O campo \"Duração\" precisa conter um valor acima de 0.")]
     public int Duracao { get; set; }
 
     public bool Lancamento { get; set; }
 
-    [Required(ErrorMessage = "O campo \"Lançamento\" é obrigatório.")]
-    public Guid GeneroId { get; set; }
+    [Required(ErrorMessage = "O campo \"Gênero\" é obrigatório.")] //corrigido de "lançamento" para "genero"
+    public Guid? GeneroId { get; set; }
     public List<SelectListItem>? GenerosDisponiveis { get; set; }
 
     public static Filme ParaEntidade(FormularioFilmeViewModel viewModel, List<GeneroFilme> generosDisponiveis)
