@@ -23,6 +23,7 @@ public class RepositorioIngressoEmOrm : IRepositorioIngresso
             .Include(x => x.Sessao)
             .ThenInclude(s => s.Sala)
             .Where(x => x.UsuarioId.Equals(usuarioId))
+            .OrderBy(x => x.NumeroAssento)
             .ToList();
     }
 }
@@ -60,6 +61,7 @@ public class RepositorioSessaoEmOrm : RepositorioBaseEmOrm<Sessao>, IRepositorio
             .Include(x => x.Sala)
             .Include(x => x.Ingressos)
             .Where(x => x.UsuarioId.Equals(usuarioId))
+            .OrderBy(x => x.NumeroMaximoIngressos)
             .ToList();
     }
 }
