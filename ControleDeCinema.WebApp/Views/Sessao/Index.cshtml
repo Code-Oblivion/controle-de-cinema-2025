@@ -44,7 +44,7 @@
 
                                 <a asp-action="Detalhes" asp-route-id="@ingresso.SessaoId" class="text-decoration-none">
                                     <div class="d-flex justify-content-between">
-                                        <h6 class="card-title text-primary">@ingresso.Inicio.ToString("dd/MM/yy HH:ss")</h6>
+                                    <h6 class="card-title text-primary" >@ingresso.Inicio.ToString("dd/MM/yy HH:ss")</h6>
 
                                         @if (ingresso.MeiaEntrada)
                                         {
@@ -65,7 +65,7 @@
                                     </div>
 
                                     <p class="card-text text-light">
-                                        <span class="fw-semibold">Filme:</span> @ingresso.Filme
+                                    <span class="fw-semibold" data-se="Ingresso-Filme">Filme:</span> @ingresso.Filme
                                     </p>
                                 </a>
 
@@ -87,7 +87,7 @@
         <div class="col-12 col-md-3 d-flex">
             <div class="card border-0 flex-fill">
                 <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">Sessão para @registro.Filme</h5>
+                    <h5 class="card-title" data-se="Sessao-Filme">Sessão para @registro.Filme</h5>
 
                     <p class="card-text mb-0">
                         <span class="fw-semibold">Início:</span> @registro.Inicio.ToString()
@@ -109,19 +109,19 @@
                         
                         @if (User.IsInRole("Empresa"))
                         {
-                            <a asp-action="Editar" asp-route-id="@registro.Id" class="btn btn-primary rounded-circle card-option" title="Edição">
+                            <a asp-action="Editar" asp-route-id="@registro.Id" class="btn btn-primary rounded-circle card-option" title="Edição" data-se="btnEdição-Sessao">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
 
                             @if (registro.Encerrada)
                             {
-                                <a asp-action="Excluir" asp-route-id="@registro.Id" class="btn btn-danger rounded-circle card-option" title="Exclusão">
+                                <a asp-action="Excluir" asp-route-id="@registro.Id" class="btn btn-danger rounded-circle card-option" title="Exclusão" data-se="btnExclusão-Sessao">
                                     <i class="bi bi-trash"></i>
                                 </a>
                             }
                             else
                             {
-                                <a asp-action="Encerrar" asp-route-id="@registro.Id" class="btn btn-danger rounded-circle card-option" title="Encerrar">
+                                <a asp-action="Encerrar" asp-route-id="@registro.Id" class="btn btn-danger rounded-circle card-option" title="Encerrar" data-se="btnEncerrar-Sessao">
                                     <i class="bi bi-calendar-x"></i>
                                 </a>
                             }
